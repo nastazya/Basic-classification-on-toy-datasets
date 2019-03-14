@@ -333,7 +333,7 @@ print('Classification flag value: ', classification_flag)
 # transrferring sklearn dataset to Data Frame
 data = read_data()
 
-'''# Calculating summary statistics
+# Calculating summary statistics
 find_mean_std(data)
 
 
@@ -387,7 +387,7 @@ if dataset_name == 'breast_cancer':
 	print('\n Plotting 3D scatters with clustering')
 	plot_3d_clustering (data, data.columns, 'mean concave points', 'mean symmetry', 'mean compactness', '3D')
 	plot_3d_clustering (data, data.columns, 'mean concave points', 'mean smoothness', 'mean compactness', '3D')
-	plot_3d_clustering (data, data.columns, 'mean concave points', 'mean perimeter', 'mean compactness', '3D')'''
+	plot_3d_clustering (data, data.columns, 'mean concave points', 'mean perimeter', 'mean compactness', '3D')
 
 
 # Performing principal component analysis (PCA)
