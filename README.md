@@ -1,5 +1,5 @@
 # class8_homework
-Loading multiple datasets from scikit-learn, visualizing them and performing PCA and basic classification algorithms:
+Loading multiple datasets from scikit-learn, visualizing them and performing PCA and three classification algorithms:
 - KNeighbors
 - GaussianNB
 - SVC
