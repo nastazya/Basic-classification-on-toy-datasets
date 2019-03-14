@@ -14,7 +14,12 @@ import plotly as py
 import plotly.graph_objs as go
 from plotly.offline import download_plotlyjs, init_notebook_mode, plot, iplot
 import random
-import sklearn.datasets
+import sklearn
+#import sklearn.datasets
+from sklearn import datasets, model_selection, metrics, neighbors
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn.model_selection import train_test_split, cross_val_score
 
 
 def load_data(input_name):
@@ -328,9 +333,9 @@ print('flag: ', classification_flag)
 
 # transrferring sklearn dataset to Data Frame
 data = read_data()
-print(data)
+print(data.columns)
 
-# Calculating summary statistics
+'''# Calculating summary statistics
 find_mean_std(data)
 
 
@@ -384,7 +389,77 @@ if dataset_name == 'breast_cancer':
 	print('\n Plotting 3D scatters with clustering')
 	plot_3d_clustering (data, data.columns, 'mean concave points', 'mean symmetry', 'mean compactness', '3D')
 	plot_3d_clustering (data, data.columns, 'mean concave points', 'mean smoothness', 'mean compactness', '3D')
-	plot_3d_clustering (data, data.columns, 'mean concave points', 'mean perimeter', 'mean compactness', '3D')
+	plot_3d_clustering (data, data.columns, 'mean concave points', 'mean perimeter', 'mean compactness', '3D')'''
+
+
+print(data.pivot(index='target'))
+
+# Performing KNeighborsClassifier 
+if classification_flag == True:
+	from sklearn.decomposition import PCA
+	pca = PCA(n_components=2)
+	proj = pca.fit_transform(dataset.data)
+	plt.scatter(proj[:, 0], proj[:, 1], c=dataset.target) 
+	plt.colorbar() 
+	plt.show()
+
+
+	print('Performing KNeighborsClassifier ')
+	X = dataset.data
+	y = dataset.target
+
+	X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y, test_size=0.25, random_state=0)
+	print('X dataset: ', X.shape, 'y targets: ', y.shape, 'train data shape: ', X_train.shape, 'test data shape: ', X_test.shape)
+	
+	for n in range(1,11):
+		clf = KNeighborsClassifier(n_neighbors=n).fit(X_train,y_train)
+		y_pred = clf.predict(X_test)
+		print('KNeighborsClassifier with {0} neighbors score: '.format(n), metrics.f1_score(y_test,y_pred,average="macro"))
+
+	print(cross_val_score(clf, X, y, cv=5))
+	#print(metrics.confusion_matrix(y_test, y_pred))
+	#print(metrics.classification_report(y_test, y_pred))
+
+
+# Performing GaussianNB 
+if classification_flag == True:
+	print('Performing GaussianNB ')
+	X = dataset.data
+	y = dataset.target
+
+	X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y, test_size=0.25, random_state=0)
+	print('X dataset: ', X.shape, 'y targets: ', y.shape, 'train data shape: ', X_train.shape, 'test data shape: ', X_test.shape)
+
+	clf = GaussianNB()
+	clf.fit(X_train,y_train)
+	y_pred = clf.predict(X_test)
+	print('GaussianNB score: ', metrics.f1_score(y_test,y_pred,average="macro"))
+
+	#print(metrics.confusion_matrix(y_test, y_pred))
+	#print(metrics.classification_report(y_test, y_pred))
+
+
+
+# Performing KNeighborsClassifier for the three chosen columns
+'''if dataset_name == 'breast_cancer':
+	X = np.empty(shape=[len(dataset.data), 3])
+	y = np.empty(shape=[len(dataset.data),])
+	k = 0
+	for j, c in enumerate(dataset.feature_names):
+		if dataset.feature_names[j] == 'mean concave points' or dataset.feature_names[j] == 'mean perimeter' or dataset.feature_names[j] == 'mean compactness': 
+			for i, s in enumerate(dataset.data):
+				#for j, c in enumerate(dataset.feature_names):
+				X[i,k] = dataset.data[i,j]
+				y[i] = dataset.target[i]
+			k = k+1
+
+	X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y, test_size=0.25, random_state=0)
+	#print('X dataset: ', X.shape, 'y targets: ', y.shape, 'train data shape: ', X_train.shape, 'test data shape: ', X_test.shape)
+	for n in range(1,11):
+		clf = KNeighborsClassifier(n_neighbors=n).fit(X_train,y_train)
+		y_pred = clf.predict(X_test)
+		print('KNeighborsClassifier (3 features) with {0} neighbors score: '.format(n), metrics.f1_score(y_test,y_pred,average="macro"))'''
+
 
 
 
