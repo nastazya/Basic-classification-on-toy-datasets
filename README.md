@@ -1,5 +1,8 @@
 # class8_homework
-Loading multiple datasets from scikit-learn, visualizing them and performing basic classification tasks 
+Loading multiple datasets from scikit-learn, visualizing them and performing PCA and basic classification algorithms:
+- KNeighbors
+- GaussianNB
+- SVC
 
 ## Instructions for running analyse.py using Docker
 **1) Copy to local repository:**
