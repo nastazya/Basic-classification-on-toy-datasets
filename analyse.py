@@ -74,8 +74,7 @@ def read_data():
 		data['target'] = pd.Categorical(pd.Series(dataset.target).map(lambda x: dataset.target_names[x]))
 	except:
 		data['target'] = dataset['target']
-	print(data)
-
+	
 	if dataset_name == 'breast_cancer':				# if this is breast cancer dataset
 		data1 = data.iloc[:,:10]
 		data1['target'] = data['target']
@@ -329,11 +328,10 @@ dataset_name = parser_assign()
 
 #Loadind dataset from sklearn
 dataset, classification_flag = load_data(dataset_name) 
-print('flag: ', classification_flag)
+print('Classification flag value: ', classification_flag)
 
 # transrferring sklearn dataset to Data Frame
 data = read_data()
-print(data.columns)
 
 '''# Calculating summary statistics
 find_mean_std(data)
@@ -392,38 +390,45 @@ if dataset_name == 'breast_cancer':
 	plot_3d_clustering (data, data.columns, 'mean concave points', 'mean perimeter', 'mean compactness', '3D')'''
 
 
-print(data.pivot(index='target'))
-
-# Performing KNeighborsClassifier 
+# Performing principal component analysis (PCA)
+#print('\nPerforming PCA')
 if classification_flag == True:
 	from sklearn.decomposition import PCA
 	pca = PCA(n_components=2)
 	proj = pca.fit_transform(dataset.data)
 	plt.scatter(proj[:, 0], proj[:, 1], c=dataset.target) 
 	plt.colorbar() 
+	plt.title = 'PCA'
 	plt.show()
 
-
-	print('Performing KNeighborsClassifier ')
+# Performing KNeighborsClassifier 
+if classification_flag == True:
+	print('/////////////////////////////////////////////')
+	print('Performing KNeighborsClassifier \n')
 	X = dataset.data
 	y = dataset.target
 
 	X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y, test_size=0.25, random_state=0)
-	print('X dataset: ', X.shape, 'y targets: ', y.shape, 'train data shape: ', X_train.shape, 'test data shape: ', X_test.shape)
+	#print('X dataset: ', X.shape, 'y targets: ', y.shape, 'train data shape: ', X_train.shape, 'test data shape: ', X_test.shape)
 	
-	for n in range(1,11):
-		clf = KNeighborsClassifier(n_neighbors=n).fit(X_train,y_train)
-		y_pred = clf.predict(X_test)
-		print('KNeighborsClassifier with {0} neighbors score: '.format(n), metrics.f1_score(y_test,y_pred,average="macro"))
+	clf = KNeighborsClassifier(n_neighbors=7).fit(X_train,y_train)
+	y_pred = clf.predict(X_test)
+	
+	#for n in range(1,11):
+	#	clf = KNeighborsClassifier(n_neighbors=n).fit(X_train,y_train)
+	#	y_pred = clf.predict(X_test)
+	#	print('KNeighborsClassifier with {0} neighbors score: '.format(n), metrics.f1_score(y_test,y_pred,average="macro"))
 
-	print(cross_val_score(clf, X, y, cv=5))
-	#print(metrics.confusion_matrix(y_test, y_pred))
-	#print(metrics.classification_report(y_test, y_pred))
+	print('KNeighborsClassifier score: ', metrics.f1_score(y_test,y_pred,average="macro"))
+	print('cross_val_score: ', cross_val_score(clf, X, y, cv=5))
+	print(metrics.confusion_matrix(y_test, y_pred))
+	print(metrics.classification_report(y_test, y_pred))
 
 
 # Performing GaussianNB 
 if classification_flag == True:
-	print('Performing GaussianNB ')
+	print('/////////////////////////////////////////////')
+	print('Performing GaussianNB \n')
 	X = dataset.data
 	y = dataset.target
 
@@ -433,12 +438,26 @@ if classification_flag == True:
 	clf = GaussianNB()
 	clf.fit(X_train,y_train)
 	y_pred = clf.predict(X_test)
+
 	print('GaussianNB score: ', metrics.f1_score(y_test,y_pred,average="macro"))
+	print(metrics.confusion_matrix(y_test, y_pred))
+	print(metrics.classification_report(y_test, y_pred))
 
-	#print(metrics.confusion_matrix(y_test, y_pred))
-	#print(metrics.classification_report(y_test, y_pred))
+# Performing SVC 
+if classification_flag == True:
+	print('/////////////////////////////////////////////')
+	print('Performing SVC\n')
+	from sklearn.svm import SVC
+	X = dataset.data
+	y = dataset.target
 
-
+	X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y, test_size=0.25, random_state=0)
+	clf = SVC(kernel='linear')
+	clf.fit(X_train, y_train)
+	y_pred = clf.predict(X_test)
+	print('SVC score: ', metrics.f1_score(y_test,y_pred,average="macro"))
+	print(metrics.confusion_matrix(y_test, y_pred))
+	print(metrics.classification_report(y_test, y_pred))
 
 # Performing KNeighborsClassifier for the three chosen columns
 '''if dataset_name == 'breast_cancer':
