@@ -24,12 +24,4 @@ If no files were provided the script will analyse breast_cancer dataset
 - `box` for boxplots
 - `3D` for 3D plots
 
-## Pseudocode for KNeighbors algorithm
 
-**input:**  k closest training examples in the feature space
-       s
-       s
-**output:** class membership
-**Statistical setting: ** Suppose we have pairs 
-- _k ← n_
-- DE=∑in(xi−yi)2−−−−−−−−−−√,
