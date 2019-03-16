@@ -1,5 +1,8 @@
 # class8_homework
-Loading multiple datasets from scikit-learn, visualizing them and performing basic classification tasks 
+Loading multiple datasets from scikit-learn, visualizing them and performing PCA and three classification algorithms:
+- KNeighbors
+- GaussianNB
+- SVC
 
 ## Instructions for running analyse.py using Docker
 **1) Copy to local repository:**
@@ -20,4 +23,5 @@ If no files were provided the script will analyse breast_cancer dataset
 - `corr`  for heatmap
 - `box` for boxplots
 - `3D` for 3D plots
+
 
