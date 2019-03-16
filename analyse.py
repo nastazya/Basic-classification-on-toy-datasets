@@ -15,7 +15,6 @@ import plotly.graph_objs as go
 from plotly.offline import download_plotlyjs, init_notebook_mode, plot, iplot
 import random
 import sklearn
-#import sklearn.datasets
 from sklearn import datasets, model_selection, metrics, neighbors
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB
@@ -333,7 +332,7 @@ print('Classification flag value: ', classification_flag)
 # transrferring sklearn dataset to Data Frame
 data = read_data()
 
-'''# Calculating summary statistics
+# Calculating summary statistics
 find_mean_std(data)
 
 
@@ -387,7 +386,7 @@ if dataset_name == 'breast_cancer':
 	print('\n Plotting 3D scatters with clustering')
 	plot_3d_clustering (data, data.columns, 'mean concave points', 'mean symmetry', 'mean compactness', '3D')
 	plot_3d_clustering (data, data.columns, 'mean concave points', 'mean smoothness', 'mean compactness', '3D')
-	plot_3d_clustering (data, data.columns, 'mean concave points', 'mean perimeter', 'mean compactness', '3D')'''
+	plot_3d_clustering (data, data.columns, 'mean concave points', 'mean perimeter', 'mean compactness', '3D')
 
 
 # Performing principal component analysis (PCA)
@@ -459,7 +458,6 @@ if classification_flag == True:
 	print(metrics.confusion_matrix(y_test, y_pred))
 	print(metrics.classification_report(y_test, y_pred))
 
-print(dataset.target_names.shape)
 
 # Performing KNeighborsClassifier for the three chosen columns
 '''if dataset_name == 'breast_cancer':
